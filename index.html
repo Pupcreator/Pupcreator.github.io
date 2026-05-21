@@ -3,109 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PupBox.no - Fake Pup Adoption</title>
+<title>PupBox.no - Pup Adoption Chaos</title>
 
 <style>
+:root {
+  --bg: #fff8f0;
+  --card: #ffffff;
+  --text: #111;
+  --pink: #ff8fab;
+  --cyan: #9ee7e3;
+  --green: #b8f7c7;
+  --yellow: #fff0b3;
+  --shadow: rgba(0,0,0,0.12);
+}
+
+body.dark {
+  --bg: #17151f;
+  --card: #252233;
+  --text: #fff5f8;
+  --pink: #ff8fab;
+  --cyan: #7ee7e2;
+  --green: #9cf6b7;
+  --yellow: #3b3140;
+  --shadow: rgba(0,0,0,0.45);
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #fff8f0;
-  color: #111;
+  background: var(--bg);
+  color: var(--text);
   text-align: center;
 }
 
 header {
-  padding: 50px 20px;
+  padding: 45px 20px;
 }
 
 h1 {
-  font-size: 60px;
-  color: #ff8fab;
+  font-size: clamp(42px, 7vw, 76px);
+  color: var(--pink);
   margin: 10px;
 }
 
 button {
-  background: #9ee7e3;
+  background: var(--cyan);
   border: none;
-  padding: 12px 20px;
-  border-radius: 12px;
+  padding: 12px 18px;
+  border-radius: 14px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
+  margin: 5px;
+  transition: 0.2s;
 }
 
 button:hover {
-  background: #b8f7c7;
+  background: var(--green);
   transform: scale(1.05);
 }
 
+.controls, .notice, .dailyBox, .cartBox {
+  max-width: 1100px;
+  margin: 18px auto;
+  background: var(--card);
+  padding: 18px;
+  border-radius: 22px;
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
 .notice {
-  max-width: 800px;
-  margin: 20px auto;
-  background: #fff0b3;
-  padding: 20px;
-  border-radius: 20px;
+  background: var(--yellow);
+}
+
+input, select {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin: 6px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 24px;
   padding: 30px;
-  max-width: 1300px;
+  max-width: 1500px;
   margin: auto;
 }
 
 .card {
-  background: white;
+  background: var(--card);
   border-radius: 25px;
-  padding: 25px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 24px;
+  box-shadow: 0 8px 20px var(--shadow);
   transition: 0.2s;
+  position: relative;
 }
 
 .card:hover {
-  transform: translateY(-7px);
+  transform: translateY(-7px) rotate(0.5deg);
 }
 
 .emoji {
-  font-size: 55px;
+  font-size: 52px;
 }
 
 .price {
   font-weight: bold;
-  color: #ff6f91;
+  color: var(--pink);
 }
 
 .tag {
   display: inline-block;
   background: #ffe3ec;
+  color: #111;
   padding: 6px 10px;
   border-radius: 999px;
   margin: 4px;
-  font-size: 13px;
+  font-size: 12px;
 }
+
+.rarity {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eee;
+  color: #111;
+}
+
+.common { background: #ddd; }
+.uncommon { background: #b8f7c7; }
+.rare { background: #a0e7e5; }
+.legendary { background: #ffd166; }
+.illegal { background: #ff6b6b; color: white; }
 
 #popup {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.55);
+  background: rgba(0,0,0,.58);
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 999;
 }
 
 .popupBox {
-  background: white;
+  background: var(--card);
   padding: 30px;
   border-radius: 25px;
-  max-width: 420px;
-  box-shadow: 0 10px 35px rgba(0,0,0,.3);
+  max-width: 480px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.35);
+}
+
+.hiddenEgg {
+  font-size: 12px;
+  opacity: .35;
+  cursor: pointer;
 }
 
 footer {
-  padding: 30px;
-  color: #666;
+  padding: 35px;
+  color: #777;
 }
 </style>
 </head>
@@ -115,16 +176,57 @@ footer {
 <header>
   <h1>🐶 PupBox.no 🐶</h1>
   <h2>Find your perfect Pup :3</h2>
-  <p>Tiny. Sleepy. Slightly dramatic. Ready for fake adoption.</p>
-  <button onclick="randomPup()">Random Pup Generator</button>
+  <p>Tiny. Sleepy. Dramatic. Fake adoptable. Probably eating dirt.</p>
+  <button onclick="randomPup()">🎲 Random Pup</button>
+  <button onclick="toggleDark()">🌙 Dark Mode</button>
+  <button onclick="maow()">🔊 MAOW</button>
+  <button onclick="councilSummon()">👑 Council Summon</button>
 </header>
 
 <div class="notice">
-  ⚠️ This is a fictional/fake adoption site. No real animals or creatures are sold here.  
-  All prices are silly fake PupBox adoption costs.
+  ⚠️ Fictional/fake adoption site. No real animals or creatures are sold here.  
+  All costs are silly fake adoption fees.
+</div>
+
+<div class="dailyBox">
+  <h2>⭐ Pup of the Day</h2>
+  <p id="pupOfDay"></p>
+  <h2>🚨 Naughty Pup of the Day</h2>
+  <p id="naughtyPup"></p>
+</div>
+
+<div class="controls">
+  <input id="search" placeholder="Search pups..." oninput="renderPups()">
+  <select id="rarityFilter" onchange="renderPups()">
+    <option value="all">All rarities</option>
+    <option value="common">Common</option>
+    <option value="uncommon">Uncommon</option>
+    <option value="rare">Rare</option>
+    <option value="legendary">Legendary</option>
+    <option value="illegal">Illegal</option>
+  </select>
+  <select id="sortBy" onchange="renderPups()">
+    <option value="default">Sort: Default</option>
+    <option value="cheap">Cheapest first</option>
+    <option value="expensive">Most expensive first</option>
+    <option value="name">Name A-Z</option>
+  </select>
+</div>
+
+<div class="cartBox">
+  <h2>🧺 Adoption Cart</h2>
+  <p id="cartText">No Pups adopted yet. Tragic.</p>
+  <button onclick="clearCart()">Clear Cart</button>
+  <button onclick="certificate()">Generate Fake Adoption Certificate</button>
 </div>
 
 <section class="grid" id="pupGrid"></section>
+
+<p class="hiddenEgg" onclick="secretBox()">psst psst psst...</p>
+
+<footer>
+  PupBox.no — blanket goblins, maow crimes, and emotional business naps.
+</footer>
 
 <div id="popup">
   <div class="popupBox">
@@ -134,189 +236,199 @@ footer {
   </div>
 </div>
 
-<footer>
-  PupBox.no — home of dramatic fictional Pups, blanket goblins, and maowing crimes.
-</footer>
-
 <script>
 const pups = [
-  {
-    name: "Sleepy Pup",
-    emoji: "😴",
-    personality: "Falls asleep anywhere. Mid-sentence. Mid-crime. Mid-existence.",
-    traits: ["soft", "eepy", "blanket lover"],
-    eur: 12,
-    usd: 13,
-    vnd: 330000
-  },
-  {
-    name: "Chaos Pup",
-    emoji: "🔥",
-    personality: "Steals socks, knocks over cups, and looks proud afterward.",
-    traits: ["feral", "loud", "crime baby"],
-    eur: 18,
-    usd: 20,
-    vnd: 510000
-  },
-  {
-    name: "Crybaby Pup",
-    emoji: "😭",
-    personality: "Cried because toast looked weird. Needs emergency cuddles.",
-    traits: ["sensitive", "clingy", "dramatic"],
-    eur: 10,
-    usd: 11,
-    vnd: 280000
-  },
-  {
-    name: "Bitey Pup",
-    emoji: "🦷",
-    personality: "Gently bites when emotional, then cries because you said ow.",
-    traits: ["nom", "affectionate", "tiny menace"],
-    eur: 15,
-    usd: 16,
-    vnd: 410000
-  },
-  {
-    name: "Clingy Pup",
-    emoji: "🧸",
-    personality: "Attaches to your leg. You live here now. Sorry.",
-    traits: ["velcro", "needy", "warm"],
-    eur: 14,
-    usd: 15,
-    vnd: 380000
-  },
-  {
-    name: "Loaf Pup",
-    emoji: "🍞",
-    personality: "Sits in loaf mode and stares like it knows ancient secrets.",
-    traits: ["quiet", "round", "mysterious"],
-    eur: 9,
-    usd: 10,
-    vnd: 250000
-  },
-  {
-    name: "Snack Pup",
-    emoji: "🍪",
-    personality: "Will sell the kingdom for one cookie. Maybe half a cookie.",
-    traits: ["hungry", "cute", "bribable"],
-    eur: 11,
-    usd: 12,
-    vnd: 300000
-  },
-  {
-    name: "Tiny Rage Pup",
-    emoji: "😾",
-    personality: "Very small. Very angry. Cannot open jars. Furious about it.",
-    traits: ["angy", "tiny", "powerful aura"],
-    eur: 16,
-    usd: 17,
-    vnd: 430000
-  },
-  {
-    name: "Blanket Goblin Pup",
-    emoji: "🛏️",
-    personality: "Lives under blankets. Hisses if sunlight touches him.",
-    traits: ["cozy", "hider", "goblin"],
-    eur: 13,
-    usd: 14,
-    vnd: 350000
-  },
-  {
-    name: "Fancy Pup",
-    emoji: "🎩",
-    personality: "Demands premium milk and acts like royalty despite eating dirt.",
-    traits: ["dramatic", "royal", "spoiled"],
-    eur: 25,
-    usd: 27,
-    vnd: 690000
-  },
-  {
-    name: "Zoomie Pup",
-    emoji: "⚡",
-    personality: "Runs in circles at 3 AM. No thoughts. Only speed.",
-    traits: ["fast", "loud", "unstoppable"],
-    eur: 17,
-    usd: 18,
-    vnd: 460000
-  },
-  {
-    name: "Sad Wet Pup",
-    emoji: "🥺",
-    personality: "Looks like he was rained on emotionally. Needs soup.",
-    traits: ["pathetic", "sweet", "rescue energy"],
-    eur: 8,
-    usd: 9,
-    vnd: 230000
-  },
-  {
-    name: "Council Pup",
-    emoji: "👑",
-    personality: "Makes important decisions, then falls asleep during voting.",
-    traits: ["leader", "sleepy", "official"],
-    eur: 30,
-    usd: 32,
-    vnd: 820000
-  },
-  {
-    name: "Milk Pup",
-    emoji: "🍼",
-    personality: "Carries a bottle everywhere. Will judge your milk selection.",
-    traits: ["baby", "milk lover", "soft"],
-    eur: 12,
-    usd: 13,
-    vnd: 330000
-  },
-  {
-    name: "Suspicious Pup",
-    emoji: "👀",
-    personality: "Stares at walls. Knows something. Refuses to explain.",
-    traits: ["weird", "watching", "ominous"],
-    eur: 19,
-    usd: 21,
-    vnd: 540000
-  }
+{name:"Sleepy Pup",emoji:"😴",rarity:"common",eur:12,usd:13,vnd:330000,personality:"Falls asleep anywhere. Mid-sentence. Mid-crime. Mid-existence.",traits:["soft","eepy","blanket lover"]},
+{name:"Chaos Pup",emoji:"🔥",rarity:"rare",eur:18,usd:20,vnd:510000,personality:"Steals socks, knocks over cups, and looks proud afterward.",traits:["feral","loud","crime baby"]},
+{name:"Crybaby Pup",emoji:"😭",rarity:"common",eur:10,usd:11,vnd:280000,personality:"Cried because toast looked weird. Needs emergency cuddles.",traits:["sensitive","clingy","dramatic"]},
+{name:"Bitey Pup",emoji:"🦷",rarity:"uncommon",eur:15,usd:16,vnd:410000,personality:"Bites lovingly. Then cries because you said ow.",traits:["nom","affectionate","tiny menace"]},
+{name:"Clingy Pup",emoji:"🧸",rarity:"common",eur:14,usd:15,vnd:380000,personality:"Attaches to your leg. You live here now.",traits:["velcro","needy","warm"]},
+{name:"Loaf Pup",emoji:"🍞",rarity:"common",eur:9,usd:10,vnd:250000,personality:"Sits in loaf mode and stares like it knows ancient secrets.",traits:["quiet","round","mysterious"]},
+{name:"Snack Pup",emoji:"🍪",rarity:"common",eur:11,usd:12,vnd:300000,personality:"Will sell the kingdom for one cookie.",traits:["hungry","cute","bribable"]},
+{name:"Tiny Rage Pup",emoji:"😾",rarity:"uncommon",eur:16,usd:17,vnd:430000,personality:"Very small. Very angry. Cannot open jars. Furious about it.",traits:["angy","tiny","power aura"]},
+{name:"Blanket Goblin Pup",emoji:"🛏️",rarity:"rare",eur:13,usd:14,vnd:350000,personality:"Lives under blankets. Hisses if sunlight touches him.",traits:["cozy","hider","goblin"]},
+{name:"Fancy Pup",emoji:"🎩",rarity:"rare",eur:25,usd:27,vnd:690000,personality:"Demands premium milk and acts royal despite eating dirt.",traits:["royal","spoiled","dramatic"]},
+{name:"Zoomie Pup",emoji:"⚡",rarity:"uncommon",eur:17,usd:18,vnd:460000,personality:"Runs in circles at 3 AM. No thoughts. Only speed.",traits:["fast","loud","unstoppable"]},
+{name:"Sad Wet Pup",emoji:"🥺",rarity:"common",eur:8,usd:9,vnd:230000,personality:"Looks like he was rained on emotionally. Needs soup.",traits:["pathetic","sweet","rescue"]},
+{name:"Council Pup",emoji:"👑",rarity:"legendary",eur:30,usd:32,vnd:820000,personality:"Makes laws, then falls asleep during voting.",traits:["leader","official","eepy"]},
+{name:"Milk Pup",emoji:"🍼",rarity:"common",eur:12,usd:13,vnd:330000,personality:"Carries a bottle everywhere. Judges your milk quality.",traits:["baby","milk","soft"]},
+{name:"Suspicious Pup",emoji:"👀",rarity:"rare",eur:19,usd:21,vnd:540000,personality:"Stares at walls. Knows something. Refuses to explain.",traits:["weird","watching","ominous"]},
+{name:"Detective Pup",emoji:"🕵️",rarity:"rare",eur:22,usd:24,vnd:610000,personality:"Investigates missing cookies. Usually ate them himself.",traits:["smart","sneaky","cookie crime"]},
+{name:"Pirate Pup",emoji:"🏴‍☠️",rarity:"rare",eur:24,usd:26,vnd:660000,personality:"Says yar. Steals blankets. Has no ship.",traits:["pirate","dramatic","plunder"]},
+{name:"Wizard Pup",emoji:"🧙",rarity:"legendary",eur:35,usd:38,vnd:960000,personality:"Casts spells incorrectly. Turned milk into more milk.",traits:["magic","confused","sparkly"]},
+{name:"Void Pup",emoji:"🌌",rarity:"illegal",eur:66,usd:72,vnd:1800000,personality:"Found staring into the Anti-Void. May stare back.",traits:["void","forbidden","maow"]},
+{name:"Police Pup",emoji:"🚓",rarity:"uncommon",eur:20,usd:22,vnd:560000,personality:"Arrests people for not giving head pats.",traits:["law","tiny badge","strict"]},
+{name:"Jail Pup",emoji:"📦",rarity:"uncommon",eur:13,usd:14,vnd:350000,personality:"Was put in The Box. Still not sorry.",traits:["naughty","boxed","criminal"]},
+{name:"Catnip Pup",emoji:"🌿",rarity:"illegal",eur:50,usd:54,vnd:1360000,personality:"Knows where the Green Glitter is hidden.",traits:["black market","hyper","forbidden"]},
+{name:"Mayor Pup",emoji:"🏛️",rarity:"legendary",eur:33,usd:36,vnd:900000,personality:"Promises better nap infrastructure. Wins election by crying.",traits:["politics","sleepy","popular"]},
+{name:"Bard Pup",emoji:"🎶",rarity:"uncommon",eur:18,usd:20,vnd:510000,personality:"Sings one note. Everyone applauds anyway.",traits:["music","loud","cute"]},
+{name:"Chef Pup",emoji:"🍳",rarity:"rare",eur:23,usd:25,vnd:630000,personality:"Cooks dirt soup. Very proud.",traits:["chef","dirt","creative"]},
+{name:"Ghost Pup",emoji:"👻",rarity:"rare",eur:21,usd:23,vnd:590000,personality:"Haunts kitchens for snacks. Mostly harmless.",traits:["spooky","hungry","floaty"]},
+{name:"Knight Pup",emoji:"🛡️",rarity:"legendary",eur:34,usd:37,vnd:930000,personality:"Defends plushies with honor.",traits:["brave","tiny sword","loyal"]},
+{name:"Royal Menace Pup",emoji:"💎",rarity:"illegal",eur:77,usd:84,vnd:2100000,personality:"Too powerful. Too cute. Cannot be taxed.",traits:["royal","danger","sparkle"]},
+{name:"Student Pup",emoji:"📚",rarity:"common",eur:10,usd:11,vnd:280000,personality:"Eats homework. Says it was research.",traits:["school","sleepy","paper snack"]},
+{name:"Drama Pup",emoji:"🎭",rarity:"uncommon",eur:16,usd:17,vnd:430000,personality:"Acts betrayed when you move your leg.",traits:["theater","betrayal","loud"]},
+{name:"Rainy Pup",emoji:"☔",rarity:"common",eur:9,usd:10,vnd:250000,personality:"Needs towel. Refuses towel. Cries.",traits:["wet","soft","confused"]},
+{name:"Star Pup",emoji:"⭐",rarity:"legendary",eur:40,usd:44,vnd:1100000,personality:"Glows softly when happy. Sleeps under moonlight.",traits:["glowy","sweet","rare"]},
+{name:"Moon Pup",emoji:"🌙",rarity:"rare",eur:28,usd:30,vnd:760000,personality:"Only wakes up when everyone else sleeps.",traits:["night","quiet","mystic"]},
+{name:"Sunbeam Pup",emoji:"☀️",rarity:"rare",eur:26,usd:28,vnd:710000,personality:"Warm. Happy. Somehow too bright.",traits:["warm","happy","shine"]},
+{name:"Gremlin Pup",emoji:"🧌",rarity:"illegal",eur:44,usd:48,vnd:1200000,personality:"Eats buttons off shirts. Cannot be reasoned with.",traits:["gremlin","buttons","chaos"]},
+{name:"Shy Pup",emoji:"🙈",rarity:"common",eur:11,usd:12,vnd:300000,personality:"Hides behind blankets and peeks at you.",traits:["shy","gentle","peek"]},
+{name:"Brave Pup",emoji:"🦁",rarity:"uncommon",eur:19,usd:21,vnd:540000,personality:"Waddles toward danger. Immediately regrets it.",traits:["brave","small","hero"]},
+{name:"Cuddle Ambush Pup",emoji:"💥",rarity:"rare",eur:22,usd:24,vnd:610000,personality:"Appears on your chest without warning.",traits:["ambush","cuddle","surprise"]},
+{name:"Independent Pup",emoji:"🚶",rarity:"common",eur:12,usd:13,vnd:330000,personality:"Loves you but has mysterious hallway business.",traits:["wanderer","curious","busy"]},
+{name:"Jealous Pup",emoji:"💢",rarity:"uncommon",eur:18,usd:20,vnd:510000,personality:"Sees you pet another Pup. Declares war.",traits:["jealous","clingy","war"]},
+{name:"Nap Prophet Pup",emoji:"🔮",rarity:"legendary",eur:55,usd:60,vnd:1500000,personality:"Predicts naps before they happen.",traits:["oracle","sleepy","vision"]},
+{name:"Emergency Pup",emoji:"🚨",rarity:"rare",eur:29,usd:31,vnd:790000,personality:"Panics helpfully. Screams with purpose.",traits:["alarm","helpful","loud"]},
+{name:"CEO Pup",emoji:"💼",rarity:"legendary",eur:70,usd:76,vnd:1900000,personality:"Owns three imaginary companies. Pays in cookies.",traits:["business","cookies","boss"]},
+{name:"Basement Pup",emoji:"🕳️",rarity:"illegal",eur:45,usd:49,vnd:1230000,personality:"Nobody knows where he came from. He has snacks.",traits:["mystery","snacks","dark"]},
+{name:"Tiny Doctor Pup",emoji:"🩺",rarity:"rare",eur:24,usd:26,vnd:660000,personality:"Prescribes blankets for every illness.",traits:["doctor","soft","blankets"]},
+{name:"Security Pup",emoji:"🔐",rarity:"uncommon",eur:20,usd:22,vnd:560000,personality:"Guards the door. Falls asleep at post.",traits:["guard","sleepy","loyal"]},
+{name:"Feral Office Pup",emoji:"🖨️",rarity:"illegal",eur:41,usd:45,vnd:1120000,personality:"Fights printers. Wins emotionally.",traits:["office","printer hate","feral"]},
+{name:"Trash King Pup",emoji:"🗑️",rarity:"rare",eur:27,usd:29,vnd:740000,personality:"Rules the bin kingdom. Smells suspicious.",traits:["trash","king","stinky"]},
+{name:"Sock Baron Pup",emoji:"🧦",rarity:"legendary",eur:60,usd:65,vnd:1640000,personality:"Controls the sock economy.",traits:["socks","baron","rich"]},
+{name:"Final Boss Pup",emoji:"🐉",rarity:"illegal",eur:99,usd:108,vnd:2700000,personality:"Health bar appears when he enters the room.",traits:["boss","danger","tiny"]}
 ];
+
+let cart = [];
+
+function money(vnd) {
+  return "₫" + vnd.toLocaleString("vi-VN");
+}
 
 function renderPups() {
   const grid = document.getElementById("pupGrid");
+  const search = document.getElementById("search").value.toLowerCase();
+  const rarity = document.getElementById("rarityFilter").value;
+  const sort = document.getElementById("sortBy").value;
+
+  let list = pups.filter(p =>
+    (rarity === "all" || p.rarity === rarity) &&
+    (p.name.toLowerCase().includes(search) ||
+     p.personality.toLowerCase().includes(search) ||
+     p.traits.join(" ").toLowerCase().includes(search))
+  );
+
+  if (sort === "cheap") list.sort((a,b) => a.eur - b.eur);
+  if (sort === "expensive") list.sort((a,b) => b.eur - a.eur);
+  if (sort === "name") list.sort((a,b) => a.name.localeCompare(b.name));
+
   grid.innerHTML = "";
 
-  pups.forEach((pup) => {
+  list.forEach(pup => {
     const card = document.createElement("div");
     card.className = "card";
-
     card.innerHTML = `
+      <span class="rarity ${pup.rarity}">${pup.rarity.toUpperCase()}</span>
       <div class="emoji">${pup.emoji}</div>
       <h2>${pup.name}</h2>
       <p>${pup.personality}</p>
-      <div>
-        ${pup.traits.map(t => `<span class="tag">${t}</span>`).join("")}
-      </div>
-      <p class="price">€${pup.eur} / $${pup.usd} / ₫${pup.vnd.toLocaleString("vi-VN")}</p>
+      <div>${pup.traits.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+      <p class="price">€${pup.eur} / $${pup.usd} / ${money(pup.vnd)}</p>
       <button onclick="adopt('${pup.name}')">Adopt me</button>
+      <button onclick="details('${pup.name}')">Details</button>
     `;
-
     grid.appendChild(card);
   });
 }
 
+function findPup(name) {
+  return pups.find(p => p.name === name);
+}
+
 function adopt(name) {
-  document.getElementById("popupTitle").innerText = "Adoption Approved!";
-  document.getElementById("popupText").innerText =
-    name + " has chosen YOU. Prepare blankets, milk, emotional patience, and legal defense for sock theft.";
-  document.getElementById("popup").style.display = "flex";
+  const pup = findPup(name);
+  cart.push(pup);
+  updateCart();
+  popup("Adoption Approved!", `${pup.name} has chosen YOU. Prepare blankets, milk, emotional patience, and legal defense for sock theft.`);
+}
+
+function details(name) {
+  const pup = findPup(name);
+  popup(`${pup.emoji} ${pup.name}`, `
+    Rarity: ${pup.rarity.toUpperCase()}<br><br>
+    Personality: ${pup.personality}<br><br>
+    Traits: ${pup.traits.join(", ")}<br><br>
+    Cost: €${pup.eur} / $${pup.usd} / ${money(pup.vnd)}
+  `);
+}
+
+function updateCart() {
+  const text = document.getElementById("cartText");
+  if (cart.length === 0) {
+    text.innerHTML = "No Pups adopted yet. Tragic.";
+    return;
+  }
+  const totalEur = cart.reduce((s,p) => s + p.eur, 0);
+  const totalUsd = cart.reduce((s,p) => s + p.usd, 0);
+  const totalVnd = cart.reduce((s,p) => s + p.vnd, 0);
+  text.innerHTML = `
+    Adopted: ${cart.map(p => p.name).join(", ")}<br>
+    Total fake cost: €${totalEur} / $${totalUsd} / ${money(totalVnd)}
+  `;
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
+}
+
+function certificate() {
+  if (cart.length === 0) {
+    popup("No Pups!", "You need to adopt at least one Pup before receiving a fake certificate.");
+    return;
+  }
+  popup("Official Fake Certificate", `This certifies that you have adopted: <br><br><b>${cart.map(p => p.name).join("<br>")}</b><br><br>Signed: The Council of Sleepy Pups.`);
 }
 
 function randomPup() {
   const pup = pups[Math.floor(Math.random() * pups.length)];
-  adopt(pup.name);
+  details(pup.name);
+}
+
+function popup(title, text) {
+  document.getElementById("popupTitle").innerHTML = title;
+  document.getElementById("popupText").innerHTML = text;
+  document.getElementById("popup").style.display = "flex";
 }
 
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
 
+function toggleDark() {
+  document.body.classList.toggle("dark");
+}
+
+function maow() {
+  const sounds = ["maow!", "mrrp?", "MAOW!!", "meep.", "hissss!", "mrow :3", "psst psst psst"];
+  popup("Pup Noise", sounds[Math.floor(Math.random() * sounds.length)]);
+}
+
+function councilSummon() {
+  popup("Council Pup Easter Egg", "The Council has been summoned. They immediately fell asleep. A law has passed anyway: more blankets.");
+}
+
+function secretBox() {
+  popup("The Box", "You found the secret bad-pup box. It is cardboard. It says: BEEN BAD.");
+}
+
+function dailyPups() {
+  const today = new Date();
+  const index = today.getFullYear() + today.getMonth() + today.getDate();
+  const pup = pups[index % pups.length];
+  const naughty = pups[(index * 7) % pups.length];
+
+  document.getElementById("pupOfDay").innerHTML =
+    `${pup.emoji} <b>${pup.name}</b> — ${pup.personality}`;
+
+  document.getElementById("naughtyPup").innerHTML =
+    `${naughty.emoji} <b>${naughty.name}</b> — Crime today: stole emotional stability and maybe a sock.`;
+}
+
+dailyPups();
 renderPups();
+updateCart();
 </script>
 
 </body>
