@@ -1,68 +1,323 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>PupBox.no</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #fff8f0;
-            text-align: center;
-            padding: 40px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PupBox.no - Fake Pup Adoption</title>
 
-        h1 {
-            color: #ff8fab;
-            font-size: 3em;
-        }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff8f0;
+  color: #111;
+  text-align: center;
+}
 
-        .pup-card {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px auto;
-            width: 300px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+header {
+  padding: 50px 20px;
+}
 
-        button {
-            background: #a0e7e5;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-        }
+h1 {
+  font-size: 60px;
+  color: #ff8fab;
+  margin: 10px;
+}
 
-        button:hover {
-            background: #b4f8c8;
-        }
-    </style>
+button {
+  background: #9ee7e3;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #b8f7c7;
+  transform: scale(1.05);
+}
+
+.notice {
+  max-width: 800px;
+  margin: 20px auto;
+  background: #fff0b3;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 30px;
+  max-width: 1300px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-7px);
+}
+
+.emoji {
+  font-size: 55px;
+}
+
+.price {
+  font-weight: bold;
+  color: #ff6f91;
+}
+
+.tag {
+  display: inline-block;
+  background: #ffe3ec;
+  padding: 6px 10px;
+  border-radius: 999px;
+  margin: 4px;
+  font-size: 13px;
+}
+
+#popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.popupBox {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  max-width: 420px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.3);
+}
+
+footer {
+  padding: 30px;
+  color: #666;
+}
+</style>
 </head>
+
 <body>
 
-    <h1>🐶 PupBox.no 🐶</h1>
-    <p><b>Find your perfect Pup :3</b></p>
-    <p>Tiny. Sleepy. Slightly dramatic. Ready for adoption.</p>
+<header>
+  <h1>🐶 PupBox.no 🐶</h1>
+  <h2>Find your perfect Pup :3</h2>
+  <p>Tiny. Sleepy. Slightly dramatic. Ready for fake adoption.</p>
+  <button onclick="randomPup()">Random Pup Generator</button>
+</header>
 
-    <div class="pup-card">
-        <h2>Sleepy Pup</h2>
-        <p>Falls asleep anywhere. Needs blankets.</p>
-        <button>Adopt me</button>
-    </div>
+<div class="notice">
+  ⚠️ This is a fictional/fake adoption site. No real animals or creatures are sold here.  
+  All prices are silly fake PupBox adoption costs.
+</div>
 
-    <div class="pup-card">
-        <h2>Chaos Pup</h2>
-        <p>Stole 4 socks. No regrets.</p>
-        <button>Adopt me</button>
-    </div>
+<section class="grid" id="pupGrid"></section>
 
-    <div class="pup-card">
-        <h2>Crybaby Pup</h2>
-        <p>Cried because toast looked weird.</p>
-        <button>Adopt me</button>
-    </div>
+<div id="popup">
+  <div class="popupBox">
+    <h2 id="popupTitle"></h2>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div>
 
-    <p>⚠ Pups may maow loudly. Some bite (lovingly).</p>
+<footer>
+  PupBox.no — home of dramatic fictional Pups, blanket goblins, and maowing crimes.
+</footer>
+
+<script>
+const pups = [
+  {
+    name: "Sleepy Pup",
+    emoji: "😴",
+    personality: "Falls asleep anywhere. Mid-sentence. Mid-crime. Mid-existence.",
+    traits: ["soft", "eepy", "blanket lover"],
+    eur: 12,
+    usd: 13,
+    vnd: 330000
+  },
+  {
+    name: "Chaos Pup",
+    emoji: "🔥",
+    personality: "Steals socks, knocks over cups, and looks proud afterward.",
+    traits: ["feral", "loud", "crime baby"],
+    eur: 18,
+    usd: 20,
+    vnd: 510000
+  },
+  {
+    name: "Crybaby Pup",
+    emoji: "😭",
+    personality: "Cried because toast looked weird. Needs emergency cuddles.",
+    traits: ["sensitive", "clingy", "dramatic"],
+    eur: 10,
+    usd: 11,
+    vnd: 280000
+  },
+  {
+    name: "Bitey Pup",
+    emoji: "🦷",
+    personality: "Gently bites when emotional, then cries because you said ow.",
+    traits: ["nom", "affectionate", "tiny menace"],
+    eur: 15,
+    usd: 16,
+    vnd: 410000
+  },
+  {
+    name: "Clingy Pup",
+    emoji: "🧸",
+    personality: "Attaches to your leg. You live here now. Sorry.",
+    traits: ["velcro", "needy", "warm"],
+    eur: 14,
+    usd: 15,
+    vnd: 380000
+  },
+  {
+    name: "Loaf Pup",
+    emoji: "🍞",
+    personality: "Sits in loaf mode and stares like it knows ancient secrets.",
+    traits: ["quiet", "round", "mysterious"],
+    eur: 9,
+    usd: 10,
+    vnd: 250000
+  },
+  {
+    name: "Snack Pup",
+    emoji: "🍪",
+    personality: "Will sell the kingdom for one cookie. Maybe half a cookie.",
+    traits: ["hungry", "cute", "bribable"],
+    eur: 11,
+    usd: 12,
+    vnd: 300000
+  },
+  {
+    name: "Tiny Rage Pup",
+    emoji: "😾",
+    personality: "Very small. Very angry. Cannot open jars. Furious about it.",
+    traits: ["angy", "tiny", "powerful aura"],
+    eur: 16,
+    usd: 17,
+    vnd: 430000
+  },
+  {
+    name: "Blanket Goblin Pup",
+    emoji: "🛏️",
+    personality: "Lives under blankets. Hisses if sunlight touches him.",
+    traits: ["cozy", "hider", "goblin"],
+    eur: 13,
+    usd: 14,
+    vnd: 350000
+  },
+  {
+    name: "Fancy Pup",
+    emoji: "🎩",
+    personality: "Demands premium milk and acts like royalty despite eating dirt.",
+    traits: ["dramatic", "royal", "spoiled"],
+    eur: 25,
+    usd: 27,
+    vnd: 690000
+  },
+  {
+    name: "Zoomie Pup",
+    emoji: "⚡",
+    personality: "Runs in circles at 3 AM. No thoughts. Only speed.",
+    traits: ["fast", "loud", "unstoppable"],
+    eur: 17,
+    usd: 18,
+    vnd: 460000
+  },
+  {
+    name: "Sad Wet Pup",
+    emoji: "🥺",
+    personality: "Looks like he was rained on emotionally. Needs soup.",
+    traits: ["pathetic", "sweet", "rescue energy"],
+    eur: 8,
+    usd: 9,
+    vnd: 230000
+  },
+  {
+    name: "Council Pup",
+    emoji: "👑",
+    personality: "Makes important decisions, then falls asleep during voting.",
+    traits: ["leader", "sleepy", "official"],
+    eur: 30,
+    usd: 32,
+    vnd: 820000
+  },
+  {
+    name: "Milk Pup",
+    emoji: "🍼",
+    personality: "Carries a bottle everywhere. Will judge your milk selection.",
+    traits: ["baby", "milk lover", "soft"],
+    eur: 12,
+    usd: 13,
+    vnd: 330000
+  },
+  {
+    name: "Suspicious Pup",
+    emoji: "👀",
+    personality: "Stares at walls. Knows something. Refuses to explain.",
+    traits: ["weird", "watching", "ominous"],
+    eur: 19,
+    usd: 21,
+    vnd: 540000
+  }
+];
+
+function renderPups() {
+  const grid = document.getElementById("pupGrid");
+  grid.innerHTML = "";
+
+  pups.forEach((pup) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <div class="emoji">${pup.emoji}</div>
+      <h2>${pup.name}</h2>
+      <p>${pup.personality}</p>
+      <div>
+        ${pup.traits.map(t => `<span class="tag">${t}</span>`).join("")}
+      </div>
+      <p class="price">€${pup.eur} / $${pup.usd} / ₫${pup.vnd.toLocaleString("vi-VN")}</p>
+      <button onclick="adopt('${pup.name}')">Adopt me</button>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function adopt(name) {
+  document.getElementById("popupTitle").innerText = "Adoption Approved!";
+  document.getElementById("popupText").innerText =
+    name + " has chosen YOU. Prepare blankets, milk, emotional patience, and legal defense for sock theft.";
+  document.getElementById("popup").style.display = "flex";
+}
+
+function randomPup() {
+  const pup = pups[Math.floor(Math.random() * pups.length)];
+  adopt(pup.name);
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+renderPups();
+</script>
 
 </body>
 </html>
