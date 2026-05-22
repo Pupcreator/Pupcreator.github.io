@@ -5,7 +5,7 @@
 
 <header>
 <img class="flag" src="citadel-flag.png" alt="Citadel of Pups Flag">
-<h1>🐶 PupBox.no 🐶</h1>
+<h1 id="site-logo">🐾 PupBox.no 🐾</h1>
 <h2>Official Fake Adoption Portal of the Citadel of Pups</h2>
 <p>150 Pups. Zero responsibility. Infinite maow.</p>
 <button onclick="randomPup()">🎲 Random Pup</button><button onclick="gacha()">🎰 Pup Gacha</button><button onclick="toggleDark()">🌙 Dark Mode</button><button onclick="maow()">🔊 MAOW</button><button onclick="councilSummon()">👑 Council</button>
@@ -16,7 +16,15 @@
 <div class="news"><h2>📰 BREAKING PUP NEWS</h2><p class="ticker" id="newsTicker"></p><button onclick="news()">More News</button></div>
 <div class="market"><h2>📈 Tiny Pup Stock Market</h2><p id="marketText"></p><button onclick="updateMarket()">Refresh Market</button></div>
 <div class="box"><h2>⭐ Pup of the Day</h2><p id="pupOfDay"></p><h2>🚨 Naughty Pup of the Day</h2><p id="naughtyPup"></p></div>
+<div class="card">
+  <h2>🐾 Citidel Extra Systems</h2>
 
+  <a href="stats.html">📊 Citidel Stats</a>
+  <br>
+  <a href="radio.html">📻 Pup Radio</a>
+  <br>
+  <a href="find-pup.html">🚨 Find Escaped Pup</a>
+</div>
 <div class="controls">
 <input id="search" placeholder="Search 150 pups..." oninput="renderPups()">
 <select id="rarityFilter" onchange="renderPups()"><option value="all">All rarities</option><option>common</option><option>uncommon</option><option>rare</option><option>legendary</option><option>mythic</option><option>forbidden</option></select>
@@ -57,8 +65,14 @@ function updateMarket(){let items=["Cookies 🍪","Milk 🍼","Hugs 🤗","Blank
 function dailyPups(){let d=new Date(),i=d.getFullYear()+d.getMonth()+d.getDate(),p=pups[i%pups.length],n=pups[(i*7)%pups.length];document.getElementById("pupOfDay").innerHTML=`${p.emoji} <b>${p.name}</b> — ${p.personality}`;document.getElementById("naughtyPup").innerHTML=`${n.emoji} <b>${n.name}</b> — Crime today: stole emotional stability and maybe a sock.`}
 function news(){let l=["Council Pup proposes mandatory nap breaks.","Sock Baron Pup denies controlling sock economy.","Milk prices rise after Snack Pup drinks evidence.","A Void Pup has been spotted near the tiny door.","The Box is full. Naughty Pups demand appeal.","Cookie market unstable after Gremlin Pup ate the chart.","Daycare reports one Pup has become a mayor.","Hospital confirms 80% of cases are eepy."];document.getElementById("newsTicker").innerText=l[Math.floor(Math.random()*l.length)]}
 dailyPups();updateMarket();news();renderPups();updateCart();
-</script></body></html>
-
 <div id="pup-toast"></div>
 <div id="walking-pup">🐾</div>
-<div id="secret-council-panel">...</div>
+<div id="secret-council-panel">
+  <h2>👑 SECRET SNOOZE COUNCIL MODE</h2>
+  <p>Access granted. Do not wake the Council.</p>
+  <button onclick="closeCouncilMode()">Close Council Chamber</button>
+</div>
+
+<script src="pup-chaos.js"></script>
+</body>
+</html>
