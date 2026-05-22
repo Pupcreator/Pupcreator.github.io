@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Find Escaped Pup</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: 450px;
+      background: #fff4d6;
+      border: 4px dashed #6b3f20;
+      border-radius: 25px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    #escapedPup {
+      position: absolute;
+      font-size: 45px;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚨 Find Escaped Pup</h1>
+
+  <p>Click the escaped Pup before he falls asleep in ventilation.</p>
+
+  <button onclick="startGame()">Start Search</button>
+  <p><b>Pups Found:</b> <span id="found">0</span></p>
+  <p id="status">Awaiting search order...</p>
+
+  <div id="gameArea">
+    <div id="escapedPup" onclick="catchPup()">🐶</div>
+  </div>
+
+  <br>
+  <a href="index.html">Return to PupBox</a>
+
+  <script>
+    let found = 0;
+
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function startGame() {
+      movePup();
+      document.getElementById("status").textContent =
+        "Escaped Pup located. APPROACH WITH COOKIE.";
+    }
+
+    function movePup() {
+      const pup = document.getElementById("escapedPup");
+      const area = document.getElementById("gameArea");
+
+      const maxX = area.clientWidth - 60;
+      const maxY = area.clientHeight - 60;
+
+      pup.style.left = rand(0, maxX) + "px";
+      pup.style.top = rand(0, maxY) + "px";
+    }
+
+    function catchPup() {
+      found++;
+      document.getElementById("found").textContent = found;
+      document.getElementById("status").textContent =
+        "MAOW! Pup recovered successfully.";
+      movePup();
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
