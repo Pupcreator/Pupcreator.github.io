@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Citidel Live Stats</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📊 Citidel Live Statistics</h1>
+
+  <div class="card">
+    <p><b>Pups Sleeping:</b> <span id="sleeping"></span></p>
+    <p><b>Cookie Crimes Today:</b> <span id="cookies"></span></p>
+    <p><b>Council Awake:</b> <span id="council"></span> / 15</p>
+    <p><b>Milk Reserves:</b> <span id="milk"></span></p>
+    <p><b>Escaped Pups:</b> <span id="escaped"></span></p>
+    <p><b>Plushies Missing:</b> <span id="plushies"></span></p>
+  </div>
+
+  <button onclick="updateStats()">Refresh Stats</button>
+  <br><br>
+  <a href="index.html">Return to PupBox</a>
+
+  <script>
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function updateStats() {
+      document.getElementById("sleeping").textContent = rand(41000000, 72000000).toLocaleString();
+      document.getElementById("cookies").textContent = rand(200, 9000).toLocaleString();
+      document.getElementById("council").textContent = rand(0, 3);
+      document.getElementById("milk").textContent = ["Stable", "Questionable", "CRITICAL", "Mostly Fine", "Do Not Ask"][rand(0, 4)];
+      document.getElementById("escaped").textContent = rand(1, 88);
+      document.getElementById("plushies").textContent = rand(50, 7000).toLocaleString();
+    }
+
+    updateStats();
+    setInterval(updateStats, 300000);
+  </script>
+</body>
+</html>
