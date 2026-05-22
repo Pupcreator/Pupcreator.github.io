@@ -89,33 +89,283 @@
 <div id="popup"><div class="popupBox"><h2 id="popupTitle"></h2><p id="popupText"></p><button onclick="closePopup()">Close</button></div></div>
 
 <script>
-const baseNames=["Sleepy","Chaos","Crybaby","Bitey","Clingy","Loaf","Snack","Tiny Rage","Blanket Goblin","Fancy","Zoomie","Sad Wet","Council","Milk","Suspicious","Detective","Pirate","Wizard","Void","Police","Jail","Catnip","Mayor","Bard","Chef","Ghost","Knight","Royal Menace","Student","Drama","Rainy","Star","Moon","Sunbeam","Gremlin","Shy","Brave","Cuddle Ambush","Independent","Jealous","Nap Prophet","Emergency","CEO","Basement","Tiny Doctor","Security","Feral Office","Trash King","Sock Baron","Final Boss","Bubble","Pillow Fort","Library","Button","Moth","Snow","Soup","Thunder","Pancake","Mirror","Time-Out","Lantern","Marshmallow","Tiny Lawyer","Crown Vault","Dream","Forbidden Loaf","Rainbow","Cookie Priest","Milk Oracle","Hug Banker","Blanket Knight","Dirt Eater","Plushie Guard","Tiny Viking","Norway","Vietnamese Coffee","Moon Cheese","Screaming Bean","Sock Goblin","Soft Tax Collector","Nap Inspector","Tiny Astronaut","Little Goblin King","Puddle","Spaghetti","Forbidden Cookie","Golden Paw","Baby Dragon","Tiny Angel","Tiny Demon","Cloud","Galaxy","Pocket","Floor Gremlin","Bathroom Guard","Tiny Captain","Cereal","Emotional Support","Ultimate",
-"Sunset","Starlight","Muffin","Waffle","Tiny Judge","Cloudberry","Cinnamon","Pebble","Sprinkle","Honey","Biscuit","Velcro","Glitter","Sleepwalker","Mango","Tiny Bard","Cocoa","Buttercup","Moonlit","Tiny Pirate","Laundry","Pajama","Teacup","Tiny Wizard","Pawprint","Clover","Tiny Ghost","Napkin","Pumpkin","Tiny Guard","Pudding","Crystal","Tiny Chef","Sugar","Tiny Knight","Hiccup","Noodle","Blankie","Tiny Mayor","Marble","Tiny Medic","Blueberry","Tiny Monk","Flower","Tiny Scout","Tiny Banker","Cookie Baron","Milk Baron","Pillow Baron","Hug Baron"];
-const emojis=["😴","🔥","😭","🦷","🧸","🍞","🍪","😾","🛏️","🎩","⚡","🥺","👑","🍼","👀","🕵️","🏴‍☠️","🧙","🌌","🚓","📦","🌿","🏛️","🎶","🍳","👻","🛡️","💎","📚","🎭","☔","⭐","🌙","☀️","🧌","🙈","🦁","💥","🚶","💢","🔮","🚨","💼","🕳️","🩺","🔐","🖨️","🗑️","🧦","🐉","🫧","🏰","📖","🔘","🦋","❄️","🍲","⛈️","🥞","🪞","⏰","🏮","☁️","⚖️","🗝️","💤","🍞","🌈","🍪","🍼","🤗","🛡️","🌱","🧸","🪓","🇳🇴","☕","🧀","🫘","🧦","💸","📋","🚀","🫅","💧","🍝","🍪","🐾","🐲","😇","😈","☁️","🌌","🎒","🧌","🚽","🧢","🥣","💖","👑"];
-const actions=["falls asleep before finishing crimes","steals socks and denies everything","cries when toast looks weird","bites lovingly then apologizes","requires constant hugs","loafs in doorways","commits cookie fraud","is tiny but furious","hides under blankets forever","demands royal milk","runs at 3 AM","looks emotionally rained on","passes laws then naps","judges milk quality","knows something forbidden","solves crimes it caused","protects plushies","eats homework","presses red buttons","causes milk shortages","wins elections by crying","haunts snack cabinets","guards one cookie","stares at walls","creates blanket forts"];
-const rarityCycle=["common","common","common","uncommon","uncommon","rare","rare","legendary","mythic","forbidden"];
-const pups=baseNames.map((n,i)=>{let r=rarityCycle[i%rarityCycle.length],eur=8+(i%50)+(r==="legendary"?20:0)+(r==="mythic"?40:0)+(r==="forbidden"?60:0);return{name:n+" Pup",emoji:emojis[i%emojis.length],rarity:r,eur,usd:Math.round(eur*1.08),vnd:eur*27000,personality:`${n} Pup ${actions[i%actions.length]}.`,traits:[r,i%2?"maow":"blanket",i%3?"cute":"dramatic"]}});
-let cart=[];function money(v){return"₫"+v.toLocaleString("vi-VN")}function findPup(n){return pups.find(p=>p.name===n)}
-function renderPups(){let g=document.getElementById("pupGrid"),s=document.getElementById("search").value.toLowerCase(),r=document.getElementById("rarityFilter").value,sort=document.getElementById("sortBy").value;let list=pups.filter(p=>(r==="all"||p.rarity===r)&&(p.name.toLowerCase().includes(s)||p.personality.toLowerCase().includes(s)||p.traits.join(" ").includes(s)));if(sort==="cheap")list.sort((a,b)=>a.eur-b.eur);if(sort==="expensive")list.sort((a,b)=>b.eur-a.eur);if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));g.innerHTML="";list.forEach(p=>{let c=document.createElement("div");c.className="card";c.innerHTML=`<span class="rarity ${p.rarity}">${p.rarity.toUpperCase()}</span><div class="emoji">${p.emoji}</div><h2>${p.name}</h2><p>${p.personality}</p><div>${p.traits.map(t=>`<span class="tag">${t}</span>`).join("")}</div><p class="price">€${p.eur} / $${p.usd} / ${money(p.vnd)}</p><button onclick="adopt('${p.name}')">Adopt me</button><button onclick="details('${p.name}')">Details</button>`;g.appendChild(c)})}
-function adopt(n){let p=findPup(n);cart.push(p);updateCart();popup("Adoption Approved!",`${p.name} has chosen YOU. Prepare milk, blankets, hugs, and legal defense for sock theft.`)}
-function details(n){let p=findPup(n);popup(`${p.emoji} ${p.name}`,`Rarity: ${p.rarity.toUpperCase()}<br><br>${p.personality}<br><br>Traits: ${p.traits.join(", ")}<br><br>Cost: €${p.eur} / $${p.usd} / ${money(p.vnd)}`)}
-function updateCart(){let t=document.getElementById("cartText");if(!cart.length){t.innerHTML="No Pups adopted yet. Tragic.";return}let e=cart.reduce((s,p)=>s+p.eur,0),u=cart.reduce((s,p)=>s+p.usd,0),v=cart.reduce((s,p)=>s+p.vnd,0);t.innerHTML=`Adopted: ${cart.map(p=>p.name).join(", ")}<br>Total fake cost: €${e} / $${u} / ${money(v)}`}
-function clearCart(){cart=[];updateCart()}function popup(a,b){document.getElementById("popupTitle").innerHTML=a;document.getElementById("popupText").innerHTML=b;document.getElementById("popup").style.display="flex"}function closePopup(){document.getElementById("popup").style.display="none"}
-function randomPup(){details(pups[Math.floor(Math.random()*pups.length)].name)}function gacha(){let p=pups[Math.floor(Math.random()*pups.length)];popup("🎰 Pup Gacha",`You pulled <b>${p.emoji} ${p.name}</b><br>Rarity: ${p.rarity.toUpperCase()}<br>${p.personality}`)}
-function toggleDark(){document.body.classList.toggle("dark")}function maow(){let s=["maow!","mrrp?","MAOW!!","meep.","hissss!","psst psst psst"];popup("Pup Noise",s[Math.floor(Math.random()*s.length)])}
-function certificate(){if(!cart.length)return popup("No Pups!","Adopt at least one Pup first.");popup("Official Fake Certificate",`This certifies that you adopted:<br><br><b>${cart.map(p=>p.name).join("<br>")}</b><br><br>Signed: The Council of Sleepy Pups.`)}
-function passport(){let p=cart[cart.length-1]||pups[Math.floor(Math.random()*pups.length)];popup("🪪 Pup Citizenship Passport",`Name: <b>${p.name}</b><br>Nation: Citadel of Pups<br>Status: Approved Baby<br>Favorite crime: blanket tax evasion.`)}
-function crimeRecord(){let p=pups[Math.floor(Math.random()*pups.length)],cr=["stole socks","bit the mayor","ate court evidence","slept during trial","hoarded milk","licked the law book"];popup("🚔 Pup Criminal Record",`${p.emoji} <b>${p.name}</b><br>Crime: ${cr[Math.floor(Math.random()*cr.length)]}<br>Sentence: 5 minutes in The Box, reduced to cuddle probation.`)}
-function election(){let p=pups[Math.floor(Math.random()*pups.length)];popup("🗳️ Council Election Result",`${p.emoji} <b>${p.name}</b> won by crying the loudest.<br>New law: all citizens receive emergency blankets.`)}
-function hospital(){let p=pups[Math.floor(Math.random()*pups.length)],d=["diagnosed with eepy","needs soup","has dramatic tummy feelings","requires 3 hugs","ate fake cookie"];popup("🏥 Pup Hospital",`${p.emoji} <b>${p.name}</b> was ${d[Math.floor(Math.random()*d.length)]}.<br>Treatment: blanket, milk, forehead kiss.`)}
-function milkCollapse(){popup("🍼 Milk Economy Collapse","BREAKING: Milk market collapses after Milk Pup drank 43% of national reserves. Council response: nap.")}function friendMarriage(){let a=pups[Math.floor(Math.random()*pups.length)],b=pups[Math.floor(Math.random()*pups.length)];popup("💞 Friendship Certificate",`${a.emoji} <b>${a.name}</b> and ${b.emoji} <b>${b.name}</b> are now official besties forever. Shared asset: one blanket.`)}
-function bedroom(){popup("🏠 Adopted Pup Bedroom","Inventory:<br>🧸 Plushie x3<br>🍼 Milk bottle x2<br>🛏️ Blanket mountain x1<br>🍪 Suspicious cookie x7<br>📦 The Box x1")}function blackMarket(){popup("🍪 Cookie Black Market","Today’s illegal prices:<br>Chocolate cookie: €44<br>Forbidden crumb: €99<br>Green Glitter cookie: priceless<br>Police Pup is watching.")}function daycare(){popup("🧸 Pup Daycare","Current daycare status:<br>12 Pups asleep<br>4 Pups crying<br>1 Pup inside the toy bin<br>Chaos Pup missing, again.")}
-function pupJail(){popup("📦 The Box","A naughty Pup has been placed in the cardboard box labeled BEEN BAD. They are already asleep.")}function councilSummon(){popup("👑 Council Pup Easter Egg","The Council has been summoned. They immediately fell asleep. A law passed anyway: more blankets.")}
-function secretBox(){popup("The Box","You found the secret bad-pup box. It says: BEEN BAD.")}function milkLantern(){popup("Milk Lantern Station","A warm lantern glows. Nearby Pups gather peacefully with tiny bottles.")}function voidDoor(){popup("Tiny Door","A Void Pup blinked at you and whispered: maow.")}
-function updateMarket(){let items=["Cookies 🍪","Milk 🍼","Hugs 🤗","Blankets 🛏️","Socks 🧦","Emotional Stability 😭"];document.getElementById("marketText").innerHTML=items.map(i=>{let c=(Math.random()*20-10).toFixed(2);return `${c>=0?"📈":"📉"} <b>${i}</b>: ${c>=0?"+":""}${c}%`}).join("<br>")}
-function dailyPups(){let d=new Date(),i=d.getFullYear()+d.getMonth()+d.getDate(),p=pups[i%pups.length],n=pups[(i*7)%pups.length];document.getElementById("pupOfDay").innerHTML=`${p.emoji} <b>${p.name}</b> — ${p.personality}`;document.getElementById("naughtyPup").innerHTML=`${n.emoji} <b>${n.name}</b> — Crime today: stole emotional stability and maybe a sock.`}
-function news(){let l=["Council Pup proposes mandatory nap breaks.","Sock Baron Pup denies controlling sock economy.","Milk prices rise after Snack Pup drinks evidence.","A Void Pup has been spotted near the tiny door.","The Box is full. Naughty Pups demand appeal.","Cookie market unstable after Gremlin Pup ate the chart.","Daycare reports one Pup has become a mayor.","Hospital confirms 80% of cases are eepy."];document.getElementById("newsTicker").innerText=l[Math.floor(Math.random()*l.length)]}
-dailyPups();updateMarket();news();renderPups();updateCart();
+const names = [
+"Sleepy","Chaos","Crybaby","Bitey","Clingy","Loaf","Snack","Tiny Rage","Blanket Goblin","Fancy",
+"Zoomie","Sad Wet","Council","Milk","Suspicious","Detective","Pirate","Wizard","Void","Police",
+"Jail","Catnip","Mayor","Bard","Chef","Ghost","Knight","Royal Menace","Student","Drama",
+"Rainy","Star","Moon","Sunbeam","Gremlin","Shy","Brave","Cuddle Ambush","Independent","Jealous",
+"Nap Prophet","Emergency Flop","Sock Baron","Cookiebury","Cinnamon","Pebble","Sprinkle","Honey",
+"Biscuit","Velcro","Glitter","Sleepwalker","Mango","Tiny Bard","Cocoa","Buttercup","Moonlit",
+"Tiny Pirate","Laundry","Pajama","Teacup","Tiny Wizard","Pawprint","Clover","Tiny Ghost","Napkin",
+"Pumpkin","Tiny Guard","Pudding","Crystal","Tiny Chef","Sugar","Tiny Knight","Rescue","Noodle",
+"Shadow","Pebbles","Muffin","Waffle","Tiny Judge","Tiny Dragon","Tiny Prince","Tiny Queen",
+"Marshmallow","Button","Socks","Velvet","Tiny Doctor","Tiny King","Tiny Witch","Tiny Angel",
+"Blueberry","Cloud","Spark","Bubble","Acorn","Fluffy","Mochi","Snowdrop","Honeybun","Tiny Baron",
+"Professor","Tiny Demon","Apple","Tiny Scout","Ribbon","Tiny Captain","Comet","Dandelion",
+"Tiny Ranger","Maple","Nugget","Tiny Knight 2","Tiny Goblin","Tiny Lantern","Tiny Crown","Tiny Star",
+"Milkdrop","Tiny Sage","Tiny Storm","Tiny Bean","Tiny Moon","Tiny Shield","Tiny Cookie","Tiny Floof",
+"Sprout","Tiny Bell","Tiny Paw","Tiny Sock","Tiny Blanket","Tiny Button","Tiny Pudding","Tiny Mayor",
+"Tiny Sleep","Tiny Maow","Tiny Sir","Tiny Lady","Tiny Trouble","Tiny Miracle","Tiny Warden",
+"Tiny Clerk","Tiny Biscuit","Tiny Justice","Tiny Beanbag","Tiny Captain 2","Tiny Tax Evader",
+"Tiny Nap Lord","Tiny Crier","Tiny Blanket Thief","Tiny Hugger","Tiny Cultist","Tiny Milk Guard",
+"Tiny Sock Thief","Tiny Flop King","Tiny Flop Queen","Tiny Disaster","Tiny Government"
+];
+
+const emojis = ["🐾","🐶","😴","🍪","🥛","🧸","👑","✨","🌙","⭐","🔥","💤","😺","🍼"];
+
+const personalities = [
+"falls asleep before finishing crimes",
+"steals socks and denies everything",
+"cries when toast looks weird",
+"bites lovingly then apologizes",
+"requires constant hugs",
+"loafs in doorways",
+"commits cookie fraud",
+"is tiny but furious",
+"hides under blankets forever",
+"demands royal milk",
+"runs at 3 AM",
+"looks emotionally rained on",
+"passes laws then naps",
+"judges milk quality",
+"knows something forbidden"
+];
+
+const rarities = ["common","uncommon","rare","legendary","mythic","forbidden"];
+
+let pups = names.map((name, i) => ({
+  name: name + " Pup",
+  emoji: emojis[i % emojis.length],
+  rarity: rarities[i % rarities.length],
+  cost: Math.round(50 + i * 1.8),
+  personality: personalities[i % personalities.length]
+}));
+
+let cart = [];
+
+function money(v) {
+  return v.toLocaleString("vi-VN");
+}
+
+function findPup(n) {
+  return pups.find(p => p.name === n);
+}
+
+function renderPups() {
+  const grid = document.getElementById("pupGrid");
+  if (!grid) return;
+
+  const search = document.getElementById("search").value.toLowerCase();
+  const rarity = document.getElementById("rarityFilter").value;
+  const sort = document.getElementById("sortBy").value;
+
+  let list = pups.filter(p =>
+    (rarity === "all" || p.rarity === rarity) &&
+    (p.name.toLowerCase().includes(search) || p.personality.toLowerCase().includes(search))
+  );
+
+  if (sort === "cheap") list.sort((a,b) => a.cost - b.cost);
+  if (sort === "expensive") list.sort((a,b) => b.cost - a.cost);
+  if (sort === "name") list.sort((a,b) => a.name.localeCompare(b.name));
+
+  grid.innerHTML = list.map(p => `
+    <div class="card">
+      <h3>${p.emoji} ${p.name}</h3>
+      <p><b>Rarity:</b> ${p.rarity}</p>
+      <p>${p.personality}</p>
+      <p><b>Cost:</b> €${p.cost}</p>
+      <button onclick="adopt('${p.name}')">Adopt Pup</button>
+      <button onclick="details('${p.name}')">Details</button>
+    </div>
+  `).join("");
+}
+
+function adopt(name) {
+  const p = findPup(name);
+  cart.push(p);
+  updateCart();
+  popup("Adoption Approved!", `${p.name} has chosen you. Prepare milk, blankets, hugs, and legal defense for sock theft.`);
+}
+
+function updateCart() {
+  const c = document.getElementById("cartText");
+  if (!c) return;
+
+  if (cart.length === 0) {
+    c.innerHTML = "No Pups adopted yet. Tragic.";
+    return;
+  }
+
+  const total = cart.reduce((s,p) => s + p.cost, 0);
+
+  c.innerHTML =
+    `Adopted: ${cart.map(p => p.name).join(", ")}<br>` +
+    `Total fake cost: €${money(total)} / ${(total * 11).toFixed(0)} NOK`;
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
+}
+
+function details(name) {
+  const p = findPup(name);
+  popup(`${p.emoji} ${p.name}`, `
+    <b>Rarity:</b> ${p.rarity}<br>
+    <b>Personality:</b> ${p.personality}<br>
+    <b>Traits:</b> maow, blanket, cute, dramatic
+  `);
+}
+
+function popup(title, text) {
+  document.getElementById("popupTitle").innerHTML = title;
+  document.getElementById("popupText").innerHTML = text;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+function randomPup() {
+  const p = pups[Math.floor(Math.random() * pups.length)];
+  details(p.name);
+}
+
+function gacha() {
+  const p = pups[Math.floor(Math.random() * pups.length)];
+  popup("🎰 Pup Gacha", `You pulled <b>${p.emoji} ${p.name}</b><br>Rarity: ${p.rarity}<br>${p.personality}`);
+}
+
+function toggleDark() {
+  document.body.classList.toggle("dark");
+}
+
+function maow() {
+  const sounds = ["maow","mrrrp","MAOW!!","meep","hissss!","psst psst psst"];
+  popup("Pup Noise", sounds[Math.floor(Math.random() * sounds.length)]);
+}
+
+function certificate() {
+  if (cart.length === 0) return popup("No Pups!", "Adopt at least one Pup first.");
+  popup("Official Fake Certificate", `This certifies that you adopted:<br><br>${cart.map(p => p.name).join("<br>")}<br><br>Signed: The Council of Sleepy Pups.`);
+}
+
+function passport() {
+  const p = cart.length ? cart[cart.length - 1] : pups[Math.floor(Math.random() * pups.length)];
+  popup("Pup Citizenship Passport", `
+    Name: <b>${p.name}</b><br>
+    Nation: Citadel of Pups<br>
+    Status: Approved Baby<br>
+    Favorite crime: blanket tax evasion.
+  `);
+}
+
+function crimeRecord() {
+  const p = pups[Math.floor(Math.random() * pups.length)];
+  const crimes = ["stole socks","bit the mayor","ate court evidence","slept during trial","hoarded milk","licked the law book"];
+  popup("🚓 Pup Criminal Record", `${p.emoji} <b>${p.name}</b><br>Crime: ${crimes[Math.floor(Math.random() * crimes.length)]}<br>Sentence: 5 minutes in The Box, reduced to cuddle probation.`);
+}
+
+function election() {
+  const p = pups[Math.floor(Math.random() * pups.length)];
+  popup("🗳️ Council Election Result", `${p.emoji} <b>${p.name}</b> won by crying the loudest.<br>New law: all citizens receive emergency blankets.`);
+}
+
+function hospital() {
+  const p = pups[Math.floor(Math.random() * pups.length)];
+  const d = ["diagnosed with eepy","needs soup","has dramatic tummy feelings","requires 3 hugs","ate fake cookie"];
+  popup("🏥 Pup Hospital", `${p.emoji} ${p.name} was ${d[Math.floor(Math.random() * d.length)]}<br>Treatment: blanket, milk, forehead kiss.`);
+}
+
+function milkCollapse() {
+  popup("🥛 Milk Economy Collapse", "BREAKING: Milk market collapses after Milk Pup drank 43% of national reserves. Council response: nap.");
+}
+
+function friendMarriage() {
+  const a = pups[Math.floor(Math.random() * pups.length)];
+  const b = pups[Math.floor(Math.random() * pups.length)];
+  popup("💞 Friendship Certificate", `${a.emoji} <b>${a.name}</b> and ${b.emoji} <b>${b.name}</b> are now official besties forever. Signed in crayon.`);
+}
+
+function bedroom() {
+  popup("🏠 Adopted Pup Bedroom", "Inventory:<br>🧸 Plushie x3<br>🥛 Milk bottle x2<br>🛏️ Blanket mountain x1<br>🍪 Suspicious cookie x7<br>📦 The Box x1");
+}
+
+function blackMarket() {
+  popup("🍪 Cookie Black Market", "Today’s illegal prices:<br>Chocolate cookie: €44<br>Forbidden crumb: €99<br>Green Glitter cookie: priceless<br>Police Pup is watching.");
+}
+
+function daycare() {
+  popup("🍼 Pup Daycare", "Current activity: blanket pile engineering. One Pup is asleep inside the art supplies.");
+}
+
+function pupJail() {
+  popup("📦 The Box", "A naughty Pup has been placed in the cardboard box labeled BEEN BAD. They are already asleep.");
+}
+
+function councilSummon() {
+  popup("👑 Council Pup Easter Egg", "The Council has been summoned. They immediately fell asleep. A law passed anyway: more blankets.");
+}
+
+function secretBox() {
+  popup("The Box", "You found the secret bad-pup box. It says: BEEN BAD.");
+}
+
+function milkLantern() {
+  popup("Milk Lantern Station", "A warm lantern glows. Nearby Pups gather peacefully with tiny bottles.");
+}
+
+function voidDoor() {
+  popup("Tiny Door", "A Void Pup blinked at you and whispered: maow.");
+}
+
+function updateMarket() {
+  const items = ["Cookies 🍪", "Milk 🥛", "Hugs 🤗", "Blankets 🛏️", "Socks 🧦", "Emotional Stability 🥲"];
+  const market = document.getElementById("marketText");
+  if (!market) return;
+
+  market.innerHTML = items.map(i => {
+    const c = (Math.random() * 20 - 10).toFixed(2);
+    return `${i}: ${c >= 0 ? "▲" : "▼"} ${c}%`;
+  }).join("<br>");
+}
+
+function dailyPups() {
+  const d = new Date();
+  const i = d.getFullYear() + d.getMonth() + d.getDate();
+  const p = pups[i % pups.length];
+  const n = pups[(i * 7) % pups.length];
+
+  document.getElementById("pupOfDay").innerHTML = `${p.emoji} <b>${p.name}</b> — ${p.personality}`;
+  document.getElementById("naughtyPup").innerHTML = `${n.emoji} <b>${n.name}</b> — Crime today: stole emotional stability and maybe a sock.`;
+}
+
+function news() {
+  const lines = [
+    "Council Pup proposes mandatory nap breaks.",
+    "Sock Baron Pup denies controlling sock economy.",
+    "Milk prices rise after Snack Pup drinks evidence.",
+    "A Void Pup has been spotted near the tiny door.",
+    "The Box is full. Naughty Pups demand appeal.",
+    "Cookie market unstable after Gremlin Pup ate the chart.",
+    "Daycare reports one Pup has become a mayor.",
+    "Hospital confirms 80% of cases are eepy."
+  ];
+
+  const ticker = document.getElementById("newsTicker");
+  if (ticker) ticker.textContent = lines[Math.floor(Math.random() * lines.length)];
+}
+
+window.onload = function () {
+  dailyPups();
+  updateMarket();
+  news();
+  renderPups();
+  updateCart();
+};
+</script>
+  
 <div id="pup-toast"></div>
 <div id="walking-pup">🐾</div>
 <div id="secret-council-panel">
