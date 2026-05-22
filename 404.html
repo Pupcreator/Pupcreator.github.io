@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>404 - Pup Stole Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🚨 404 — ESCAPED PUP STOLE THIS PAGE</h1>
+
+  <div class="card">
+    <h2>🐾 Page Missing</h2>
+
+    <p>We looked everywhere.</p>
+    <p>He took the page and hid under a blanket.</p>
+
+    <button onclick="cookieBribe()">
+      Offer Cookie Bribe
+    </button>
+
+    <button onclick="reportPup()">
+      Report Missing Pup
+    </button>
+
+    <br><br>
+
+    <a href="index.html">Return to Citidel</a>
+
+    <p id="message"></p>
+  </div>
+
+  <script>
+    function cookieBribe() {
+      document.getElementById("message").textContent =
+        "🍪 Cookie bribe accepted. Pup is considering returning the page.";
+    }
+
+    function reportPup() {
+      document.getElementById("message").textContent =
+        "📋 Missing Pup report filed with the Snooze Council.";
+    }
+  </script>
+</body>
+</html>
