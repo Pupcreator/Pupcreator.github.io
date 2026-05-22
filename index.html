@@ -114,8 +114,7 @@ const names = [
 "Void Lantern",
 "First Maow",
 "Council Prime",
-const pups = baseNames.map((n, i) => {
-  let r = rarityCycle[i % rarityCycle.length],
+const pups = names.map((n, i) => {  let r = rarityCycle[i % rarityCycle.length],
       eur = r === "legendary" ? 20 + i :
             r === "mythic" ? 40 + i :
             r === "forbidden" ? 60 + i :
@@ -134,7 +133,8 @@ const pups = baseNames.map((n, i) => {
       i % 2 ? "maow" : "blanket",
       i % 3 ? "cute" : "dramatic"
       ];
-const emojis = ["🐾","🐶","😴","🍪","🥛","🧸","👑","✨","🌙","⭐","🔥","💤","😺","🍼"];
+const emojis = ["🐾","🐶","😴","🍪","🥛","🧸","👑","✨","🌙","⭐","🔥","💤","😺","🍼"  };
+});
 
 const personalities = [
 "falls asleep before finishing crimes",
