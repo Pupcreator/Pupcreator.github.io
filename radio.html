@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pup Radio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📻 Citidel Pup Radio</h1>
+
+  <div class="card">
+    <h2>LIVE BROADCAST</h2>
+    <p id="radioText">Press the button to begin Pup Radio.</p>
+    <button onclick="broadcast()">Play Broadcast</button>
+  </div>
+
+  <br>
+  <a href="index.html">Return to PupBox</a>
+
+  <script>
+    const broadcasts = [
+      "MAOW FM: Council Member 4 has entered nap mode.",
+      "Milk reserves are stable. Please ignore Tank 7.",
+      "Breaking: escaped Pup recovered from bakery district.",
+      "Warning: blanket shortage in Sector 8.",
+      "Cookie black market raided. Suspects were too cute to arrest.",
+      "Public notice: do not feed Council Pups after midnight.",
+      "Weather report: cloudy with scattered maows.",
+      "Emergency alert: Pup has discovered stairs.",
+      "Live update: one Pup is arguing with a vending machine.",
+      "Sector 12 reports excessive blanket hoarding.",
+      "Reminder: hissing at tax forms is not a legal signature.",
+      "Council announcement delayed due to snack-related crying."
+    ];
+
+    function broadcast() {
+      const text = broadcasts[Math.floor(Math.random() * broadcasts.length)];
+      document.getElementById("radioText").textContent = text;
+    }
+
+    setInterval(broadcast, 12000);
+  </script>
+</body>
+</html>
